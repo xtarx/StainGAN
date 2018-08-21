@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1>
+         <meta name="author" content="Tarek">
+      <title>StainGAN: Stain Style Transfer for Digital Histological Images</title>
+      <!-- Bootstrap Core CSS -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <!-- Custom CSS -->
+      <link href="css/main.css" rel="stylesheet">
+      <!-- Custom Fonts -->
+      <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117937125-1"></script>
+      <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         
+         gtag('config', 'UA-117937125-1');
+      </script>
+      <script type="text/javascript" async
+         src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+   </head>
+   <body>
+      <!-- Header -->
+      <div class="intro-header">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-12">
+                  <div class="intro-message">
+                     <h1>StainGAN: Stain Style Transfer for Digital Histological Images</h1>
+                     <h3>M Tarek Shaban, Christoph Baur, Nassir Navab and <a  target="_blank"href="http://campar.in.tum.de/Main/ShadiAlbarqouni">Shadi Albarqouni</a> </h3>
+                     <h4>Computer Aided Medical Procedures (CAMP), Technische Universität München, Munich, Germany </h4>
+                     <h4>Whiting School of Engineering, Johns Hopkins University, Baltimore, USA </h4>
+                     <ul class="list-inline banner-social-buttons">
+                        <li>
+                           <a href="https://arxiv.org/abs/1804.01601" ><i class="fa fa-file fa-fw"></i> <span >Read Paper</span></a>
+                        </li>
+                        <li>
+                           <a href="https://github.com/xtarx/StainGAN" ><i class="fa fa-github fa-fw"></i> <span >View Code</span></a>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- /.container -->
+      </div>
+      <!-- /.intro-header -->
+      <!-- Page Content -->
+      <div class="content-section-b" id="results">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-12 col-sm-6">
+                  <div class="clearfix"></div>
+                  <h2 class="section-heading">Abstract</h2>
+                  <p class="lead">
+Digitized Histological diagnosis is in increasing demand. However, color variations due
+to various factors are imposing obstacles to the diagnosis process. The problem of stain
+color variations is a well-defined problem with many proposed solutions. Most of these
+solutions are highly dependent on a reference template slide. We propose a deep-learning
+solution inspired by cycle consistency that is trained end-to-end, eliminating the need
+for an expert to pick a representative reference slide. Our approach showed superior
+results quantitatively and qualitatively against the state of the art methods. We further
+validated our method on a clinical use-case, namely Breast Cancer tumor classification,
+showing 16% increase in AUC                  </p>
+               </div>
+               <div class="col-lg-offset-2 col-lg-8  col-sm-6">
+                  <div class="juxtapose">
+                     <img width="1680px" src="img/before.png" data-label="Unnormalized"/>
+                     <img width="1680px" src="img/after.png" data-label="StainGAN"/>
+                  </div>
+                  <script src="https://cdn.knightlab.com/libs/juxtapose/latest/js/juxtapose.min.js"></script>
+                  <link rel="stylesheet" href="https://cdn.knightlab.com/libs/juxtapose/latest/css/juxtapose.css">
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- /.container -->
+      </div>
+      <!-- /.content-section-a -->
+      <div class="content-section-a" id="approach">
+         <div class="container">
+            <div class="row">
+              
+               <div class="col-lg-4 col-lg-offset-1 col-sm-6">
+                  <div class="clearfix"></div>
+                  <h2 class="section-heading">Methodology</h2>
+                  <p class="lead">
+                     Our framework, as depicted in Figure, transfers the H&E Stain Appearance between different scanners, i.e from Hamamatsu (H) to Aperio (A) Scanner, without the need of paired data from both domains. The adversarial loss tries to match the distribution of the generated images to that of the target domain (Forward Cycle), and match the distribution of the generated target domain back to the source domain (Backward Cycle). The Cycle-consistency loss ensures that generated images preserve similar structure as in the source domain. This loss goes in both directions forward and backward cycles to assure stability.
+                  </p>
+               </div>
+                <div class="col-lg-7 col-sm-6">
+                  <img class="img-responsive" src="img/cycle.png" alt="">
+               </div>
+            </div>
+         </div>
+         <!-- /.container -->
+      </div>
+      </div>
+      <div class="content-section-b" id="dataset">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
+                  <div class="clearfix"></div>
+                  <h2 class="section-heading">Outperforming the State of the Art</h2>
+                  <p class="lead">
+                     we presented StainGAN as a novel method for the stain normalization task. Our experiments revealed that our method significantly outperforms the state of the art. The visual appearance of different methods can be seen in Fig.1. It clearly shows that images normalized with StainGAN are very similar to the ground truth. Further, our StainGAN method has been validated in a clinical use-case, namely Tumor Classification, as a pre-processing step showing a superior performance. Moreover, the processing time of our method is on par with Macenko as reported in Table. 2. We believe that end-to-end learning based approaches are ought to overtake the classic stain normalization methods. 
+                  </p>
+               </div>
+               <div class="col-lg-5 col-sm-pull-6  col-sm-6">
+                  <img class="img-responsive" src="img/roc.png" alt="">
+                  <img class="img-responsive" src="img/boxplot.png" alt="">
+               </div>
+            </div>
+         </div>
+         <!-- /.container -->
+      </div>
+      <!-- /.content-section-b -->
+      <!-- Footer -->
+      <footer>
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-12">                     
+                  Contact <a href="mailto:shadi.albarqouni@tum.de?Subject=StainGAN" target="_top">Shadi Albarqouni</a> 
+                  </p>
+               </div>
+            </div>
+         </div>
+      </footer>
+      <!-- jQuery -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script type="text/javascript" src="js/jquery.image-changer.min.js"></script>
+      <!-- Bootstrap Core JavaScript -->
+      <script src="js/bootstrap.min.js"></script>
+   </body>
+</html>
