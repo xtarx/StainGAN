@@ -1,0 +1,50 @@
+
+# Predict whole slide¶
+def predict_wsi(slide, all_samples, model, output_dir):
+    alpha = 0.5
+
+    n_samples = len(all_samples)
+    n_cols = int(slide.dimensions[0] / 256)
+    n_rows = int(slide.dimensions[1] / 256)
+    assert n_cols * n_rows == n_samples
+
+    thumbnail = slide.get_thumbnail((n_cols, n_rows))
+    thumbnail = np.array(thumbnail)
+
+    # batch_size = n_cols
+    batch_size = 128
+    output_thumbnail_preds = list()
+
+    for offset in tqdm(list(range(0, n_samples, batch_size))):
+        batch_samples = all_samples.iloc[offset:offset + batch_size]
+        png_fnames = batch_samples.tile_loc.apply(lambda coord: str(output_dir / ('%d_%d.png' % coord[::-1])))
+
+        X, _ = next(gen_imgs(batch_samples, batch_size, shuffle=False))
+
+        if batch_samples.is_tissue.nunique() == 1 and batch_samples.iloc[0].is_tissue == False:
+            # all patches in this row do not have tissue, skip them all
+            output_thumbnail_preds.append(np.zeros(batch_size, dtype=np.float32))
+
+            # output pngs
+            for i, png_fname in enumerate(png_fnames):
+                plt.imsave(png_fname, X[i])
+        else:
+            # make predictions
+            preds = predict_batch_from_model(X, model)
+            output_thumbnail_preds.append(preds.mean(axis=(1, 2)))
+
+            # overlay preds
+            # save blended imgs
+            for i, png_fname in enumerate(png_fnames):
+                pred_i = preds[i]
+                X_i = X[i]
+                output_img = cv2.cvtColor(X_i, cv2.COLOR_RGB2GRAY)
+                output_img2 = cv2.cvtColor(output_img.copy(), cv2.COLOR_GRAY2RGB)
+
+                overlay = np.uint8(cm.jet(pred_i) * 255)[:, :, :3]
+                blended = cv2.addWeighted(overlay, alpha, output_img2, 1 - alpha, 0, output_img)
+
+                plt.imsave(png_fname, blended)
+
+    output_thumbnail_preds = np.array(output_thumbnail_preds)
+    return output_thumbnail_preds
